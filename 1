@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LuxWear</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fff;
+      color: #111;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .card img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+    }
+    .card-body {
+      padding: 1rem;
+    }
+    .cart-icon {
+      cursor: pointer;
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -10px;
+      background: black;
+      color: white;
+      border-radius: 9999px;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 360px;
+      height: 100%;
+      background: white;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      z-index: 999;
+      overflow-y: auto;
+    }
+    button {
+      background: black;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .remove-btn {
+      color: red;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script type="text/javascript">
+    const { useState } = React;
+
+    const products = [
+      { id: 1, name: "Silk Blazer by Elara", price: 950, image: "https://via.placeholder.com/300x400?text=Silk+Blazer" },
+      { id: 2, name: "Velvet Gown by Orin", price: 1500, image: "https://via.placeholder.com/300x400?text=Velvet+Gown" },
+      { id: 3, name: "Leather Boots by Novae", price: 720, image: "https://via.placeholder.com/300x400?text=Leather+Boots" },
+    ];
+
+    function App() {
+      const [cart, setCart] = useState([]);
+      const [cartOpen, setCartOpen] = useState(false);
+
+      const addToCart = (product) => setCart(prev => [...prev, product]);
+      const removeFromCart = (index) => setCart(prev => prev.filter((_, i) => i !== index));
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+      const handleCheckout = () => {
+        alert("This is a demo. Checkout is not connected.");
+      };
+
+      return (
+        <div>
+          <header>
+            <h1>LuxWear</h1>
+            <div className="cart-icon" onClick={() => setCartOpen(true)}>
+              🛍️
+              {cart.length > 0 && <span className="badge">{cart.length}</span>}
+            </div>
+          </header>
+
+          <div className="grid">
+            {products.map(product => (
+              <div key={product.id} className="card">
+                <img src={product.image} alt={product.name} />
+                <div className="card-body">
+                  <h3>{product.name}</h3>
+                  <p>${product.price}</p>
+                  <button onClick={() => addToCart(product)}>Add to Cart</button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {cartOpen && (
+            <div className="cart-drawer">
+              <h2>Your Cart</h2>
+              <button onClick={() => setCartOpen(false)}>Close</button>
+              {cart.length === 0 ? (
+                <p>Your cart is empty.</p>
+              ) : (
+                <>
+                  {cart.map((item, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+                      <span>{item.name}</span>
+                      <div>
+                        ${item.price}
+                        <button className="remove-btn" onClick={() => removeFromCart(i)}>✖</button>
+                      </div>
+                    </div>
+                  ))}
+                  <p><strong>Total: ${total}</strong></p>
+                  <button onClick={handleCheckout}>Proceed to Checkout</button>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
