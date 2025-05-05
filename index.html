@@ -1,4 +1,3 @@
-# luxwear
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,15 +7,15 @@
   <style>
     body {
       font-family: sans-serif;
-      background: #fff;
-      color: #111;
       margin: 0;
-      padding: 0;
+      background: white;
+      color: black;
     }
     header {
       display: flex;
       justify-content: space-between;
       padding: 1rem 2rem;
+      background: #fff;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     .grid {
@@ -104,61 +103,52 @@
       const removeFromCart = (index) => setCart(prev => prev.filter((_, i) => i !== index));
       const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-      const handleCheckout = () => {
-        alert("This is a demo. Checkout is not connected.");
-      };
+      const handleCheckout = () => alert("This is a demo. Checkout is not connected.");
 
       return (
-        <div>
-          <header>
-            <h1>LuxWear</h1>
-            <div className="cart-icon" onClick={() => setCartOpen(true)}>
-              🛍️
-              {cart.length > 0 && <span className="badge">{cart.length}</span>}
-            </div>
-          </header>
-
-          <div className="grid">
-            {products.map(product => (
-              <div key={product.id} className="card">
-                <img src={product.image} alt={product.name} />
-                <div className="card-body">
-                  <h3>{product.name}</h3>
-                  <p>${product.price}</p>
-                  <button onClick={() => addToCart(product)}>Add to Cart</button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {cartOpen && (
-            <div className="cart-drawer">
-              <h2>Your Cart</h2>
-              <button onClick={() => setCartOpen(false)}>Close</button>
-              {cart.length === 0 ? (
-                <p>Your cart is empty.</p>
-              ) : (
-                <>
-                  {cart.map((item, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                      <span>{item.name}</span>
-                      <div>
-                        ${item.price}
-                        <button className="remove-btn" onClick={() => removeFromCart(i)}>✖</button>
-                      </div>
-                    </div>
-                  ))}
-                  <p><strong>Total: ${total}</strong></p>
-                  <button onClick={handleCheckout}>Proceed to Checkout</button>
-                </>
-              )}
-            </div>
-          )}
-        </div>
+        React.createElement("div", null,
+          React.createElement("header", null,
+            React.createElement("h1", null, "LuxWear"),
+            React.createElement("div", { className: "cart-icon", onClick: () => setCartOpen(true) }, 
+              "🛍️", cart.length > 0 && React.createElement("span", { className: "badge" }, cart.length)
+            )
+          ),
+          React.createElement("div", { className: "grid" }, 
+            products.map(product =>
+              React.createElement("div", { key: product.id, className: "card" },
+                React.createElement("img", { src: product.image, alt: product.name }),
+                React.createElement("div", { className: "card-body" },
+                  React.createElement("h3", null, product.name),
+                  React.createElement("p", null, "$" + product.price),
+                  React.createElement("button", { onClick: () => addToCart(product) }, "Add to Cart")
+                )
+              )
+            )
+          ),
+          cartOpen && React.createElement("div", { className: "cart-drawer" },
+            React.createElement("h2", null, "Your Cart"),
+            React.createElement("button", { onClick: () => setCartOpen(false) }, "Close"),
+            cart.length === 0 ?
+              React.createElement("p", null, "Your cart is empty.") :
+              [
+                ...cart.map((item, i) =>
+                  React.createElement("div", { key: i, style: { display: "flex", justifyContent: "space-between", marginBottom: "10px" } },
+                    React.createElement("span", null, item.name),
+                    React.createElement("div", null,
+                      "$" + item.price,
+                      React.createElement("button", { className: "remove-btn", onClick: () => removeFromCart(i) }, "✖")
+                    )
+                  )
+                ),
+                React.createElement("p", null, React.createElement("strong", null, "Total: $" + total)),
+                React.createElement("button", { onClick: handleCheckout }, "Proceed to Checkout")
+              ]
+          )
+        )
       );
     }
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
   </script>
 </body>
 </html>
